@@ -6,26 +6,32 @@ import {
 } from "./infrastructure/database/mongodb/connection";
 
 import loggerMiddleware from "./presentation/middlewares/loggerMiddleware";
-import { mentorRoutes } from "./presentation/routes/mentorRouts";
-import { userRoutes } from "./presentation/routes/userRouts";
+// import { mentorRoutes } from "./presentation/routes/mentorRouts";
+// import { userRoutes } from "./presentation/routes/userRouts";
+import { messageBroker } from "./infrastructure/MessageBroker/config";
+import { UserRouter } from "./presentation/routes/userRouts";
 
 
 export class App {
   constructor(private server: Iserver) {}
 
   async initialize(): Promise<void> {
+    await this.connectDB();
+    await this.connectKafka();
     this.registerMiddleware();
     this.registerRoutes();
     this.registerErrorHandler();
-    await this.connectDB();
+
   }
 
   private registerMiddleware(): void {
     this.server.registerMiddleware(loggerMiddleware);
   }
   private registerRoutes(): void {
-    this.server.registerRoutes("/api/user/mentor", mentorRoutes);
-    this.server.registerRoutes("/api/user/user", userRoutes);
+    const userRoutes = new UserRouter().getRouter();
+    // const mentorRoutes = new MentorRouter().getRouter();
+    this.server.registerRoutes("/api/chat/user", userRoutes);
+    // this.server.registerRoutes("/api/auth/mentor", mentorRoutes);
 
   }
 
@@ -39,6 +45,7 @@ export class App {
 
   async shutdown(): Promise<void> {
     await disconnectDB();
+    await messageBroker.disconnect();
     console.log("Shut dow server");
   }
   private async connectDB() {
@@ -48,6 +55,9 @@ export class App {
       console.log("Server could not be started", error);
       process.exit(1);
     }
+  }
+  private async connectKafka(): Promise<void> {
+    await messageBroker.connect();
   }
 
 

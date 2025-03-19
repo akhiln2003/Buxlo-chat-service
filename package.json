@@ -10,9 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@buxlo/common": "^1.0.55",
+    "@buxlo/common": "^1.0.76",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
+    "kafkajs": "^2.2.4",
     "mongoose": "^8.10.2",
     "morgan": "^1.10.0"
   },

@@ -1,14 +1,22 @@
 import { Router } from "express";
+import { DIContainer } from "../../infrastructure/di/DIContainer";
 
+export class MentorRouts {
+  private router: Router;
+  private diContainer: DIContainer;
+  constructor() {
+    this.router = Router();
+    this.diContainer = new DIContainer();
+    this.initializeControllers();
+    this.initializeRoutes();
 
-const router = Router();
-// const diContainer = new DIContainer();
+  }
 
+  private initializeControllers():void{
+    
+  }
 
-// Inject dependencies into the Controller
-
-/////////////////////////////////////
-
-// i wand to add middleware for validate endpoints
-
-export { router as mentorRoutes };
+  private initializeRoutes():void{
+    // this.router.post('')
+  }
+}
