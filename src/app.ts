@@ -6,10 +6,9 @@ import {
 } from "./infrastructure/database/mongodb/connection";
 
 import loggerMiddleware from "./presentation/middlewares/loggerMiddleware";
-// import { mentorRoutes } from "./presentation/routes/mentorRouts";
-// import { userRoutes } from "./presentation/routes/userRouts";
 import { messageBroker } from "./infrastructure/MessageBroker/config";
 import { UserRouter } from "./presentation/routes/userRouts";
+import { CommonRouts } from "./presentation/routes/commonRouts";
 
 
 export class App {
@@ -29,9 +28,11 @@ export class App {
   }
   private registerRoutes(): void {
     const userRoutes = new UserRouter().getRouter();
-    // const mentorRoutes = new MentorRouter().getRouter();
+    const commonRouts = new CommonRouts().getRouter();
+
     this.server.registerRoutes("/api/chat/user", userRoutes);
-    // this.server.registerRoutes("/api/auth/mentor", mentorRoutes);
+    this.server.registerRoutes("/api/chat/common", commonRouts);
+
 
   }
 

@@ -1,7 +1,7 @@
 import { KafkaConsumer, UserCreatedEvent } from "@buxlo/common";
 import { Topics } from "@buxlo/common/build/events/topics";
 import { Consumer, KafkaMessage } from "kafkajs";
-import { UserRepository } from "../../../repositories/userRepositary";
+import { UserRepository } from "../../../repositories/user.Repository";
 
 export class UserCreatedConsumer extends KafkaConsumer<UserCreatedEvent> {
   topic: Topics.userCreated = Topics.userCreated;

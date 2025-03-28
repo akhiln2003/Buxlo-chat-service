@@ -69,5 +69,4 @@ const UserChat = mongoose.model<UserDocument, UserModel>(
   "UserChat",
   userSchema
 );
-
 export { UserChat };

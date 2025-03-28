@@ -1,6 +1,6 @@
 import { InternalServerError } from "@buxlo/common";
 import { Chat } from "../../../domain/entities/chat";
-import { ChatRepository } from "../../../infrastructure/repositories/chatRepositary";
+import { ChatRepository } from "../../../infrastructure/repositories/chat.Repository";
 import { IconnectMentorUseCase } from "../../interface/user/IconnectMentorUseCase";
 
 export class ConnectMentorUseCase implements IconnectMentorUseCase {

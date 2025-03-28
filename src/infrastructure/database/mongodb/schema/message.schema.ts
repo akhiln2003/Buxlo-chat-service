@@ -1,27 +1,25 @@
 import mongoose from "mongoose";
 
 interface MessageAttributes {
-  chatId: mongoose.Types.ObjectId; 
-  senderId: mongoose.Types.ObjectId; 
-  receiverId: mongoose.Types.ObjectId; 
+  chatId: string; 
+  senderId: string; 
+  receiverId: string; 
   content: string;
-  type: "text" | "image" | "video" | "audio" | "emoji" ;
+  contentType: "text" | "image" | "video" | "audio" | "emoji" ;
   status: "sent" | "delivered" | "received" | "read"; 
-  deletedForMe?: boolean; 
-  deletedForEveryone?: boolean; 
-  replyTo?: mongoose.Types.ObjectId; 
+  deleted?: "me" | "everyone"; 
+  replyTo?: string; 
 }
 
 interface MessageDocument extends mongoose.Document {
-  chatId: mongoose.Types.ObjectId; 
-  senderId: mongoose.Types.ObjectId; 
-  receiverId: mongoose.Types.ObjectId; 
+  chatId: string; 
+  senderId: string; 
+  receiverId: string; 
   content: string;
-  type: "text" | "image" | "video" | "audio" | "emoji" ;
+  contentType: "text" | "image" | "video" | "audio" | "emoji" ;
   status: "sent" | "delivered" | "received" | "read"; 
-  deletedForMe?: boolean; 
-  deletedForEveryone?: boolean; 
-  replyTo?: mongoose.Types.ObjectId; 
+  deleted?: "me" | "everyone"; 
+  replyTo?: string; 
   createdAt: Date; 
   updatedAt: Date; 
 }
@@ -51,7 +49,7 @@ const messageSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    type: {
+    contentType: {
       type: String,
       enum: ["text", "image", "video", "audio", "emoji"], 
       default: "text",
@@ -61,13 +59,9 @@ const messageSchema = new mongoose.Schema(
       enum: ["sent", "delivered", "received", "read"], // Allowed statuses
       default: "sent",
     },
-    deletedForMe: {
-      type: Boolean,
-      default: false,
-    },
-    deletedForEveryone: {
-      type: Boolean,
-      default: false,
+    deleted: {
+      type: String,
+      enum:["me","everyone"]      
     },
     replyTo: {
       type: String,
@@ -89,9 +83,9 @@ const messageSchema = new mongoose.Schema(
 
 // Static method to create a new message
 messageSchema.statics.build = (attrs: MessageAttributes) => {
-  return new Message(attrs);
+  return new MessageSchema(attrs);
 };
 
-const Message = mongoose.model<MessageDocument, MessageModel>("Message", messageSchema);
+const MessageSchema = mongoose.model<MessageDocument, MessageModel>("Message", messageSchema);
 
-export { Message };
+export { MessageSchema };

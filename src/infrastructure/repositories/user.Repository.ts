@@ -1,5 +1,5 @@
 import { User } from "../../domain/entities/user";
-import { IuserRepository } from "../../domain/interfaces/Iuserrepository";
+import { IuserRepository } from "../@types/IuserRepository";
 import { UserChat } from "../database/mongodb/schema/user.schema";
 
 export class UserRepository implements IuserRepository {

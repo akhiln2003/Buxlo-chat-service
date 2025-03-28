@@ -29,7 +29,7 @@ const chatSchema = new mongoose.Schema(
     participants: [
       {
         type: String,
-        ref: "User",
+        ref: "UserChat",
         required: true,
       },
     ],
