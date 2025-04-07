@@ -1,40 +1,36 @@
-import morgan from "morgan";
-// import winston from "winston";
-// import path from "node:path";
 import { createCustomLogger } from "@buxlo/common";
+import morgan from "morgan";
 
-export const customLogger = createCustomLogger("api-gateway", __dirname);
+export const customLogger = createCustomLogger("api-gateway");
 
-const logFormat = `
-{
-    "httpMethod": ":method",
-    "requestUrl": ":url",
-    "responseStatus": ":status",
-    "responseTime": ":response-time ms"
-}`;
+// Morgan format string (includes response time properly)
+const logFormat = ":method :url :status  - :response-time ms";
 
-function logMessageHandler(message: any) {
-  customLogger.info("HTTP request received", JSON.parse(message.trim()));
-}
+// Custom stream handler with improved parsing
+const logMessageHandler = (message: string) => {
+  try {
+    // Example Morgan output: "POST /api/auth/user/signout 200 33 - 12.345 ms"
+    const parts = message.trim().split(" ");
+    const logData = {
+      httpMethod: parts[0],
+      requestUrl: parts[1], 
+      responseStatus: parts[2], 
+      responseTime: parts[5] ? `${parts[5]} ${parts[6]}` : "0 ms",
+    };
+    customLogger.info("HTTP request received", logData);
+  } catch (error) {
+    customLogger.error("Failed to parse log message", { message, error });
+  }
+};
 
+// Morgan middleware
 const loggerMiddleware = morgan(logFormat, {
   stream: { write: logMessageHandler },
 });
 
-// Optional: Add error handling
-// customLogger.exceptions.handle(
-//   new winston.transports.File({
-//     filename: path.join(__dirname, "logs", "exceptions.log"),
-//     format: winston.format.combine(
-//       winston.format.timestamp({ format: customTimestampFormat }),
-//       winston.format.json()
-//     ),
-//   })
-// );
-
-
+// Handle unhandled rejections
 process.on("unhandledRejection", (error) => {
-  customLogger.error("Unhandled Rejection:", error);
+  customLogger.error("Unhandled Rejection:", { error });
 });
 
 export default loggerMiddleware;
