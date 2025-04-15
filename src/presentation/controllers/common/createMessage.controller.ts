@@ -7,9 +7,11 @@ export class CreateMessageController {
 
   create = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { data } = req.body;
-      console.log(data);
-      const message = this.createMessageUseCase.execute(data);
+      const message = await this.createMessageUseCase.execute(
+        { ...req.body },
+        req.file
+      );
+
       res.status(HttpStatusCode.OK).json({ message });
     } catch (error) {
       next(error);

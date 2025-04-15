@@ -2,12 +2,14 @@ import { Router } from "express";
 import { DIContainer } from "../../infrastructure/di/DIContainer";
 import { fetchMessagesDto } from "../../zodSchemaDto/user/fetchMessages.dto";
 import { FetchMessagesController } from "../controllers/common/fetchMessages.controller";
-import {  validateReqQueryParams } from "@buxlo/common";
+import { validateReqQueryParams } from "@buxlo/common";
 import { CreateMessageController } from "../controllers/common/createMessage.controller";
+import multer from "multer";
 
 export class CommonRouts {
   private router: Router;
   private diContainer: DIContainer;
+  private upload = multer({ storage: multer.memoryStorage() });
 
   private fetchMessagesController!: FetchMessagesController;
   private createMessageController!: CreateMessageController;
@@ -36,7 +38,8 @@ export class CommonRouts {
     );
     this.router.post(
       "/createmessage",
-    //   validateReqBody(),
+      //   validateReqBody(),
+      this.upload.single("content"),
       this.createMessageController.create
     );
   }

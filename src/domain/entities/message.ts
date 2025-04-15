@@ -4,7 +4,7 @@ export class Message {
     public senderId: string,
     public receiverId: string,
     public content: string,
-    public contentType: "text" | "image" | "video" | "audio" | "emoji",
+    public contentType: "text" | "image" | "video" | "audio" ,
     public status: "sent" | "delivered" | "received" | "read",
     public deleted?: "me" | "everyone",
     public replyTo?: string,

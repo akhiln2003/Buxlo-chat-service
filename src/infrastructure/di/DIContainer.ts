@@ -8,15 +8,17 @@ import { ConnectMentorUseCase } from "../../application/usecase/user/connectMent
 import { FetchContactsUseCase } from "../../application/usecase/user/fetchContactsUseCase";
 import { IchatRepository } from "../@types/IchatRepository";
 import { ImessageRepository } from "../@types/ImessageRepository";
+import { Is3Service } from "../@types/Is3Service";
+import { S3Service } from "../external-services/s3-client";
 import { ChatRepository } from "../repositories/chat.Repository";
 import { MessageRepository } from "../repositories/message.Repository";
 
 export class DIContainer {
-  // private _s3Service: Is3Service;
+  private _s3Service: Is3Service;
   private _chatRepo: IchatRepository;
   private _messageRepo: ImessageRepository;
   constructor() {
-    // this._s3Service = new S3Service();
+    this._s3Service = new S3Service();
     this._chatRepo = new ChatRepository();
     this._messageRepo = new MessageRepository();
   }
@@ -30,7 +32,7 @@ export class DIContainer {
   }
 
   createMessageUseCase(): IcreateMessageUseCase {
-    return new CreateMessageUseCase(this._messageRepo);
+    return new CreateMessageUseCase(this._messageRepo , this._s3Service);
   }
 
   fetchMessagesUseCase(): IfetchMessagesUseCase {

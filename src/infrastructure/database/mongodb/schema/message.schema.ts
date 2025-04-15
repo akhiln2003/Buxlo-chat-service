@@ -5,7 +5,7 @@ interface MessageAttributes {
   senderId: string; 
   receiverId: string; 
   content: string;
-  contentType: "text" | "image" | "video" | "audio" | "emoji" ;
+  contentType: "text" | "image" | "video" | "audio"  ;
   status: "sent" | "delivered" | "received" | "read"; 
   deleted?: "me" | "everyone"; 
   replyTo?: string; 
@@ -16,7 +16,7 @@ interface MessageDocument extends mongoose.Document {
   senderId: string; 
   receiverId: string; 
   content: string;
-  contentType: "text" | "image" | "video" | "audio" | "emoji" ;
+  contentType: "text" | "image" | "video" | "audio"  ;
   status: "sent" | "delivered" | "received" | "read"; 
   deleted?: "me" | "everyone"; 
   replyTo?: string; 
@@ -51,7 +51,7 @@ const messageSchema = new mongoose.Schema(
     },
     contentType: {
       type: String,
-      enum: ["text", "image", "video", "audio", "emoji"], 
+      enum: ["text", "image", "video", "audio", ], 
       default: "text",
     },
     status: {
