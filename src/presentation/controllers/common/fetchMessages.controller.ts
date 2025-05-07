@@ -1,14 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 import { IfetchMessagesUseCase } from "../../../application/interface/common/IfetchMessagesUserCase";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
+import { BadRequest } from "@buxlo/common";
 
 export class FetchMessagesController {
   constructor(private fetchMessagesUseCase: IfetchMessagesUseCase) {}
   fetch = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { id } = req.params;
-      const messages = await this.fetchMessagesUseCase.execute(id);
-      res.status(HttpStatusCode.OK).json({ messages });
+      const { id } = req.query;
+      if (!id) {
+        throw new BadRequest("ID is required");
+      }      
+      const messages = await this.fetchMessagesUseCase.execute(id as string);
+      res.status(HttpStatusCode.OK).json({ messages }); 
     } catch (error) {
       next(error);
     }

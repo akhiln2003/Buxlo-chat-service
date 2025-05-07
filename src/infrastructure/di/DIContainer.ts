@@ -1,8 +1,10 @@
 import { IcreateMessageUseCase } from "../../application/interface/common/IcreateMessageUseCase";
+import { IfetchDataFromS3UseCase } from "../../application/interface/common/IfetchDataFromS3UseCase";
 import { IfetchMessagesUseCase } from "../../application/interface/common/IfetchMessagesUserCase";
 import { IconnectMentorUseCase } from "../../application/interface/user/IconnectMentorUseCase";
 import { IfetchContactsUseCase } from "../../application/interface/user/IfetchContactsUseCase";
 import { CreateMessageUseCase } from "../../application/usecase/common/createMessages.UseCase";
+import { FetchDataFromS3UseCase } from "../../application/usecase/common/fetchDataFromS3.UseCase";
 import { FetchMessagesUsesCase } from "../../application/usecase/common/fetchMessage.UseCase";
 import { ConnectMentorUseCase } from "../../application/usecase/user/connectMentorUseCase";
 import { FetchContactsUseCase } from "../../application/usecase/user/fetchContactsUseCase";
@@ -37,5 +39,8 @@ export class DIContainer {
 
   fetchMessagesUseCase(): IfetchMessagesUseCase {
     return new FetchMessagesUsesCase(this._messageRepo);
+  }
+  fetchDataFromS3UseCase():IfetchDataFromS3UseCase{
+    return new FetchDataFromS3UseCase(this._s3Service);
   }
 }

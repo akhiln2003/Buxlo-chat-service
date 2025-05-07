@@ -4,6 +4,7 @@ import { fetchMessagesDto } from "../../zodSchemaDto/user/fetchMessages.dto";
 import { FetchMessagesController } from "../controllers/common/fetchMessages.controller";
 import { validateReqQueryParams } from "@buxlo/common";
 import { CreateMessageController } from "../controllers/common/createMessage.controller";
+import { FetchDataFromS3Controller } from "../controllers/common/fetchDataFromS3.controller";
 import multer from "multer";
 
 export class CommonRouts {
@@ -13,6 +14,7 @@ export class CommonRouts {
 
   private fetchMessagesController!: FetchMessagesController;
   private createMessageController!: CreateMessageController;
+  private fetchDataFromS3Controller!: FetchDataFromS3Controller;
 
   constructor() {
     this.router = Router();
@@ -28,6 +30,9 @@ export class CommonRouts {
     this.createMessageController = new CreateMessageController(
       this.diContainer.createMessageUseCase()
     );
+    this.fetchDataFromS3Controller = new FetchDataFromS3Controller(
+      this.diContainer.fetchDataFromS3UseCase()
+    );
   }
 
   private initializeRoutes(): void {
@@ -42,6 +47,7 @@ export class CommonRouts {
       this.upload.single("content"),
       this.createMessageController.create
     );
+    this.router.post("/fetchmessagefroms3", this.fetchDataFromS3Controller.get);
   }
 
   public getRouter(): Router {

@@ -7,7 +7,6 @@ export class FetchMessagesUsesCase implements IfetchMessagesUseCase {
   async execute(id: string): Promise<Message[] | []> {
     try {
       const messages = await this.messageRepo.fetchMessage(id);
-      console.log(messages);
       return messages;
     } catch (error) {
       console.error("Error from fetchMessagesUsesCase :", error);
