@@ -3,6 +3,7 @@ import { Iserver } from "../../domain/interfaces/Iserver";
 import express from "express";
 import cookieParser from "cookie-parser";
 import { createServer } from "http";
+import { SocketServer } from "../socket/server";
 
 export class ExpressWebServer implements Iserver {
   private app: Application;
@@ -15,6 +16,7 @@ export class ExpressWebServer implements Iserver {
     this.app.use(express.json());
 
     this.server = createServer(this.app);
+    new SocketServer(this.server);     // to connect socket server with express server
   }
   registerMiddleware(middleware: any): void {
     this.app.use(middleware);
