@@ -4,6 +4,7 @@ import { Server, Socket } from "socket.io";
 export class SocketServer {
   private io: Server;
   private activeSockets: Map<string, string> = new Map();
+  private online: Set<string> = new Set();
 
   constructor(httpServer: HttpServer) {
     this.io = new Server(httpServer, {
@@ -16,9 +17,7 @@ export class SocketServer {
     this.setupListeners();
   }
 
-  private getActiveSocket(userId: string): string | undefined {
-    return this.activeSockets.get(userId);
-  }
+
 
   private setActiveSocket(socketId: string, userId: string): void {
     console.log(`Setting active socket for user ${userId}: ${socketId}`);
@@ -31,8 +30,9 @@ export class SocketServer {
   }
 
   private handleConnection(socket: Socket): void {
-    console.log(`User connected: ${socket.id}`);
+    console.log(`User connected: ${socket.id},`, this.online);
     this.setupSocketListeners(socket);
+    this.io.emit("activeUsers", Array.from(this.online));   
   }
 
   private handleDisconnect(socket: Socket): void {
@@ -48,10 +48,6 @@ export class SocketServer {
     }
   }
 
-  private handleMessage(socket: Socket, data: any): void {
-    console.log("Received message:", data);
-    this.io.emit("message", data);
-  }
 
   private handleStatus(socket: Socket, data: any): void {
     console.log("Received status:", data);
@@ -76,6 +72,11 @@ export class SocketServer {
     console.log(`User ${userId} joined with socket ID: ${socket.id}`);
   }
 
+  private handleOnline(socket: Socket, userId: string): void {
+    this.online.add(userId);
+    socket.emit("online", {userId});
+    console.log(`User ${userId} is online with socket ID: ${socket.id}`);
+  }
   private handleLeave(socket: Socket, userId: string): void {
     this.removeActiveSocket(userId);
     console.log(`User ${userId} left with socket ID: ${socket.id}`);
@@ -83,6 +84,7 @@ export class SocketServer {
 
   private setupSocketListeners(socket: Socket): void {
     socket.on("status", (data) => this.handleStatus(socket, data));
+
     socket.on("direct_message", (data) =>
       this.handleDirectMessage(socket, data)
     );
@@ -91,6 +93,8 @@ export class SocketServer {
       ({ userId, receiverId }: { userId: string; receiverId: string }) =>
         this.handleJoin(socket, userId, receiverId)
     );
+
+    socket.on("online", (userId: string) => this.handleOnline(socket, userId));
     socket.on("leave", (userId: string) => this.handleLeave(socket, userId));
     socket.on("disconnect", () => this.handleDisconnect(socket));
   }
