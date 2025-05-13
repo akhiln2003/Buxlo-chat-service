@@ -3,7 +3,6 @@ import { Server, Socket } from "socket.io";
 
 export class SocketServer {
   private io: Server;
-  private activeSockets: Map<string, string> = new Map();
   private online: Set<string> = new Set();
 
   constructor(httpServer: HttpServer) {
@@ -19,33 +18,17 @@ export class SocketServer {
 
 
 
-  private setActiveSocket(socketId: string, userId: string): void {
-    console.log(`Setting active socket for user ${userId}: ${socketId}`);
 
-    this.activeSockets.set(userId, socketId);
-  }
 
-  private removeActiveSocket(userId: string): void {
-    this.activeSockets.delete(userId);
-  }
 
   private handleConnection(socket: Socket): void {
-    console.log(`User connected: ${socket.id},`, this.online);
+    console.log(`User connected: ${socket.id},`);
     this.setupSocketListeners(socket);
-    this.io.emit("activeUsers", Array.from(this.online));   
   }
 
   private handleDisconnect(socket: Socket): void {
     console.log(`User disconnected: ${socket.id}`);
 
-    // Find and remove any user associated with this socket ID
-    for (const [userId, socketId] of this.activeSockets.entries()) {
-      if (socketId === socket.id) {
-        this.activeSockets.delete(userId);
-        console.log(`Removed user ${userId} from active sockets mapping`);
-        break;
-      }
-    }
   }
 
 
@@ -67,18 +50,25 @@ export class SocketServer {
   }
 
   private handleJoin(socket: Socket, userId: string, receiverId: string): void {
-    this.setActiveSocket(socket.id, userId);
     socket.join(`${userId}${receiverId}`);
     console.log(`User ${userId} joined with socket ID: ${socket.id}`);
   }
 
   private handleOnline(socket: Socket, userId: string): void {
     this.online.add(userId);
-    socket.emit("online", {userId});
+    this.io.emit("online", {userId});
     console.log(`User ${userId} is online with socket ID: ${socket.id}`);
   }
-  private handleLeave(socket: Socket, userId: string): void {
-    this.removeActiveSocket(userId);
+
+
+  private handleActiveUser(socket: Socket): void {
+    socket.emit("active_user", Array.from(this.online));
+  }
+
+  private handileLeave(socket: Socket, userId: string): void {
+    socket.leave(userId);
+    this.online.delete(userId);
+    this.io.emit("leave",  userId );
     console.log(`User ${userId} left with socket ID: ${socket.id}`);
   }
 
@@ -94,11 +84,11 @@ export class SocketServer {
         this.handleJoin(socket, userId, receiverId)
     );
 
+    socket.on("active_user", () => this.handleActiveUser(socket));
+    socket.on("leave",(userId:string)=> this.handileLeave(socket, userId));
     socket.on("online", (userId: string) => this.handleOnline(socket, userId));
-    socket.on("leave", (userId: string) => this.handleLeave(socket, userId));
     socket.on("disconnect", () => this.handleDisconnect(socket));
   }
-
   private setupListeners(): void {
     this.io.on("connection", (socket: Socket) => this.handleConnection(socket));
   }
