@@ -6,8 +6,15 @@ export const fetchMessagesDto = z.object({
       return /^[0-9a-f]{24}$/.test(id);
     },
     {
-      message: "Invalid MongoDB ObjectId (User ID)",
+      message: "Invalid MongoDB ObjectId (Chat ID)",
     }
   ),
- 
+  receiverId: z.string().refine(
+    (id) => {
+      return /^[0-9a-f]{24}$/.test(id);
+    },
+    {
+      message: "Invalid MongoDB ObjectId (Receiver ID)",
+    }
+  ),
 });

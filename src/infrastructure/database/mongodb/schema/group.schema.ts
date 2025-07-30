@@ -27,15 +27,16 @@ const groupSchema = new mongoose.Schema(
       type: String,
     },
   },
-  {
+   {
     toJSON: {
-      transform(_, ret) {
+      transform(_: any, ret: any) {
         ret.id = ret._id;
         delete ret._id;
         delete ret.__v;
+        return ret;
       },
     },
-    timestamps: true,
+    timestamps: true
   }
 );
 

@@ -7,11 +7,11 @@ export class FetchMessagesController {
   constructor(private fetchMessagesUseCase: IfetchMessagesUseCase) {}
   fetch = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { id } = req.query;
+      const { id , receiverId} = req.query;
       if (!id) {
         throw new BadRequest("ID is required");
       }      
-      const messages = await this.fetchMessagesUseCase.execute(id as string);
+      const messages = await this.fetchMessagesUseCase.execute(id as string , receiverId as string);
       res.status(HttpStatusCode.OK).json({ messages }); 
     } catch (error) {
       next(error);

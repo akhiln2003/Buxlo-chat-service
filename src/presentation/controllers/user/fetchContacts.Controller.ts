@@ -8,7 +8,7 @@ export class FetchContactsController {
     try {
       const { id } = req.query;
       const constats = await this.fetchContactsUseCase.execute(id as string);
-      res.status(HttpStatusCode.OK).json({constats});
+      res.status(HttpStatusCode.OK).json({ constats });
     } catch (error) {
       next(error);
     }

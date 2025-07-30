@@ -2,5 +2,13 @@ import { Message } from "../../domain/entities/message";
 
 export interface ImessageRepository {
   create(message: Message): Promise<Message>;
-  fetchMessage( chatId:string ):Promise<Message[] | []>
+  fetchMessage(chatId: string, receiverId: string): Promise<Message[] | []>;
+  getLastMessageAndUnreadCount(
+    chatId: string,
+    receiverId: string
+  ): Promise<{
+    lastMessage: Message;
+    unreadCount: number;
+  }>;
+  updateMessage(chatId: string, receiverId: string): Promise<Message[]>;
 }

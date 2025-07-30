@@ -1,27 +1,27 @@
 import mongoose from "mongoose";
 
 interface MessageAttributes {
-  chatId: string; 
-  senderId: string; 
-  receiverId: string; 
+  chatId: string;
+  senderId: string;
+  receiverId: string;
   content: string;
-  contentType: "text" | "image" | "video" | "audio" |"document"  ;
-  status: "sent" | "delivered" | "received" | "read"; 
-  deleted?: "me" | "everyone"; 
-  replyTo?: string; 
+  contentType: "text" | "image" | "video" | "audio" | "document";
+  status: "sent" | "delivered" | "received" | "read";
+  deleted?: "me" | "everyone";
+  replyTo?: string;
 }
 
 interface MessageDocument extends mongoose.Document {
-  chatId: string; 
-  senderId: string; 
-  receiverId: string; 
+  chatId: string;
+  senderId: string;
+  receiverId: string;
   content: string;
-  contentType: "text" | "image" | "video" | "audio" | "document" ;
-  status: "sent" | "delivered" | "received" | "read"; 
-  deleted?: "me" | "everyone"; 
-  replyTo?: string; 
-  createdAt: Date; 
-  updatedAt: Date; 
+  contentType: "text" | "image" | "video" | "audio" | "document";
+  status: "sent" | "delivered" | "received" | "read";
+  deleted?: "me" | "everyone";
+  replyTo?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface MessageModel extends mongoose.Model<MessageDocument> {
@@ -51,7 +51,7 @@ const messageSchema = new mongoose.Schema(
     },
     contentType: {
       type: String,
-      enum: ["text", "image", "video", "audio", "document"], 
+      enum: ["text", "image", "video", "audio", "document"],
       default: "text",
     },
     status: {
@@ -61,7 +61,7 @@ const messageSchema = new mongoose.Schema(
     },
     deleted: {
       type: String,
-      enum:["me","everyone"]      
+      enum: ["me", "everyone"],
     },
     replyTo: {
       type: String,
@@ -70,14 +70,15 @@ const messageSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true, // Automatically adds `createdAt` and `updatedAt` fields
     toJSON: {
-      transform(_, ret) {
+      transform(_: any, ret: any) {
         ret.id = ret._id;
         delete ret._id;
         delete ret.__v;
+        return ret;
       },
     },
+    timestamps: true,
   }
 );
 
@@ -86,6 +87,9 @@ messageSchema.statics.build = (attrs: MessageAttributes) => {
   return new MessageSchema(attrs);
 };
 
-const MessageSchema = mongoose.model<MessageDocument, MessageModel>("Message", messageSchema);
+const MessageSchema = mongoose.model<MessageDocument, MessageModel>(
+  "Message",
+  messageSchema
+);
 
 export { MessageSchema };

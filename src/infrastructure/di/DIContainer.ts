@@ -30,7 +30,7 @@ export class DIContainer {
   }
 
   fetchContactsUseCase(): IfetchContactsUseCase {
-    return new FetchContactsUseCase(this._chatRepo);
+    return new FetchContactsUseCase(this._chatRepo , this._messageRepo);
   }
 
   createMessageUseCase(): IcreateMessageUseCase {

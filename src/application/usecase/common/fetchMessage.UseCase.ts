@@ -4,9 +4,9 @@ import { IfetchMessagesUseCase } from "../../interface/common/IfetchMessagesUser
 
 export class FetchMessagesUsesCase implements IfetchMessagesUseCase {
   constructor(private messageRepo: ImessageRepository) {}
-  async execute(id: string): Promise<Message[] | []> {
+  async execute(id: string, receiverId: string): Promise<Message[] | []> {
     try {
-      const messages = await this.messageRepo.fetchMessage(id);
+      const messages = await this.messageRepo.fetchMessage(id, receiverId);
       return messages;
     } catch (error) {
       console.error("Error from fetchMessagesUsesCase :", error);
