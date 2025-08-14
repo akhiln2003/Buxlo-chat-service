@@ -8,49 +8,49 @@ import { FetchDataFromS3Controller } from "../controllers/common/fetchDataFromS3
 import multer from "multer";
 
 export class CommonRouts {
-  private router: Router;
-  private diContainer: DIContainer;
-  private upload = multer({ storage: multer.memoryStorage() });
+  private _router: Router;
+  private _diContainer: DIContainer;
+  private _upload = multer({ storage: multer.memoryStorage() });
 
-  private fetchMessagesController!: FetchMessagesController;
-  private createMessageController!: CreateMessageController;
-  private fetchDataFromS3Controller!: FetchDataFromS3Controller;
+  private _fetchMessagesController!: FetchMessagesController;
+  private _createMessageController!: CreateMessageController;
+  private _fetchDataFromS3Controller!: FetchDataFromS3Controller;
 
   constructor() {
-    this.router = Router();
-    this.diContainer = new DIContainer();
-    this.initializeControllers();
-    this.initializeRoutes();
+    this._router = Router();
+    this._diContainer = new DIContainer();
+    this._initializeControllers();
+    this._initializeRoutes();
   }
 
-  private initializeControllers(): void {
-    this.fetchMessagesController = new FetchMessagesController(
-      this.diContainer.fetchMessagesUseCase()
+  private _initializeControllers(): void {
+    this._fetchMessagesController = new FetchMessagesController(
+      this._diContainer.fetchMessagesUseCase()
     );
-    this.createMessageController = new CreateMessageController(
-      this.diContainer.createMessageUseCase()
+    this._createMessageController = new CreateMessageController(
+      this._diContainer.createMessageUseCase()
     );
-    this.fetchDataFromS3Controller = new FetchDataFromS3Controller(
-      this.diContainer.fetchDataFromS3UseCase()
+    this._fetchDataFromS3Controller = new FetchDataFromS3Controller(
+      this._diContainer.fetchDataFromS3UseCase()
     );
   }
 
-  private initializeRoutes(): void {
-    this.router.get(
+  private _initializeRoutes(): void {
+    this._router.get(
       "/fetchmessages",
       validateReqQueryParams(fetchMessagesDto),
-      this.fetchMessagesController.fetch
+      this._fetchMessagesController.fetch
     );
-    this.router.post(
+    this._router.post(
       "/createmessage",
       //   validateReqBody(),
-      this.upload.single("content"),
-      this.createMessageController.create
+      this._upload.single("content"),
+      this._createMessageController.create
     );
-    this.router.post("/fetchmessagefroms3", this.fetchDataFromS3Controller.get);
+    this._router.post("/fetchmessagefroms3", this._fetchDataFromS3Controller.get);
   }
 
   public getRouter(): Router {
-    return this.router;
+    return this._router;
   }
 }

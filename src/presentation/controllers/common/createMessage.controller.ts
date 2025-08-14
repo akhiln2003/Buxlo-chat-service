@@ -3,11 +3,11 @@ import { IcreateMessageUseCase } from "../../../application/interface/common/Icr
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 
 export class CreateMessageController {
-  constructor(private createMessageUseCase: IcreateMessageUseCase) {}
+  constructor(private _createMessageUseCase: IcreateMessageUseCase) {}
 
   create = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const message = await this.createMessageUseCase.execute(
+      const message = await this._createMessageUseCase.execute(
         { ...req.body },
         req.file
       );

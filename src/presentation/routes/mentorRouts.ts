@@ -2,11 +2,11 @@ import { Router } from "express";
 import { DIContainer } from "../../infrastructure/di/DIContainer";
 
 export class MentorRouts {
-  private router: Router;
-  private diContainer: DIContainer;
+  private _router: Router;
+  private _diContainer: DIContainer;
   constructor() {
-    this.router = Router();
-    this.diContainer = new DIContainer();
+    this._router = Router();
+    this._diContainer = new DIContainer();
     this.initializeControllers();
     this.initializeRoutes();
 

@@ -12,36 +12,36 @@ import { CommonRouts } from "./presentation/routes/commonRouts";
 
 
 export class App {
-  constructor(private server: Iserver) {}
+  constructor(private _server: Iserver) {}
 
   async initialize(): Promise<void> {
-    await this.connectDB();
-    await this.connectKafka();
-    this.registerMiddleware();
-    this.registerRoutes();
-    this.registerErrorHandler();
+    await this._connectDB();
+    await this._connectKafka();
+    this._registerMiddleware();
+    this._registerRoutes();
+    this._registerErrorHandler();
 
   }
 
-  private registerMiddleware(): void {
-    this.server.registerMiddleware(loggerMiddleware);
+  private _registerMiddleware(): void {
+    this._server.registerMiddleware(loggerMiddleware);
   }
-  private registerRoutes(): void {
+  private _registerRoutes(): void {
     const userRoutes = new UserRouter().getRouter();
     const commonRouts = new CommonRouts().getRouter();
 
-    this.server.registerRoutes("/api/chat/user", userRoutes);
-    this.server.registerRoutes("/api/chat/common", commonRouts);
+    this._server.registerRoutes("/api/chat/user", userRoutes);
+    this._server.registerRoutes("/api/chat/common", commonRouts);
 
 
   }
 
-  private registerErrorHandler(): void {
-    this.server.registerErrorHandler(errorHandler as any);
+  private _registerErrorHandler(): void {
+    this._server.registerErrorHandler(errorHandler as any);
   }
 
   async start(port: number): Promise<void> {
-    await this.server.start(port);
+    await this._server.start(port);
   }
 
   async shutdown(): Promise<void> {
@@ -49,7 +49,7 @@ export class App {
     await messageBroker.disconnect();
     console.log("Shut dow server");
   }
-  private async connectDB() {
+  private async _connectDB() {
     try {
       await connectDB();
     } catch (error) {
@@ -57,7 +57,7 @@ export class App {
       process.exit(1);
     }
   }
-  private async connectKafka(): Promise<void> {
+  private async _connectKafka(): Promise<void> {
     await messageBroker.connect();
   }
 

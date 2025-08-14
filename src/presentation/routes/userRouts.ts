@@ -7,41 +7,41 @@ import { fetchContactsDto } from "../../zodSchemaDto/user/fetchContacts.dto";
 import { FetchContactsController } from "../controllers/user/fetchContacts.Controller";
 
 export class UserRouter {
-  private router: Router;
-  private diContainer: DIContainer;
+  private _router: Router;
+  private _diContainer: DIContainer;
 
-  private connectMentorController!: ConnectMentorController;
-  private fetchContactsController!: FetchContactsController;
+  private _connectMentorController!: ConnectMentorController;
+  private _fetchContactsController!: FetchContactsController;
   constructor() {
-    this.router = Router();
-    this.diContainer = new DIContainer();
-    this.initializeControllers();
-    this.initializeRoutes();
+    this._router = Router();
+    this._diContainer = new DIContainer();
+    this._initializeControllers();
+    this._initializeRoutes();
   }
 
-  private initializeControllers(): void {
-    this.connectMentorController = new ConnectMentorController(
-      this.diContainer.connectMentorUseCase()
+  private _initializeControllers(): void {
+    this._connectMentorController = new ConnectMentorController(
+      this._diContainer.connectMentorUseCase()
     );
-    this.fetchContactsController = new FetchContactsController(
-      this.diContainer.fetchContactsUseCase()
+    this._fetchContactsController = new FetchContactsController(
+      this._diContainer.fetchContactsUseCase()
     );
   }
 
-  private initializeRoutes(): void {
-    this.router.post(
+  private _initializeRoutes(): void {
+    this._router.post(
       "/connectmentor",
       validateReqBody(connectMentorDto),
-      this.connectMentorController.connect
+      this._connectMentorController.connect
     );
-    this.router.get(
+    this._router.get(
       "/fetchcontacts",
       validateReqQueryParams(fetchContactsDto),
-      this.fetchContactsController.contacts
+      this._fetchContactsController.contacts
     );
   }
 
   public getRouter(): Router {
-    return this.router;
+    return this._router;
   }
 }

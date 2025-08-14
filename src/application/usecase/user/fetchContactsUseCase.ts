@@ -6,20 +6,17 @@ import { IchatRepository } from "../../../infrastructure/@types/IchatRepository"
 
 export class FetchContactsUseCase implements IfetchContactsUseCase {
   constructor(
-    private chatRepo: IchatRepository,
-    private messageRepo: ImessageRepository
+    private _chatRepo: IchatRepository,
+    private _messageRepo: ImessageRepository
   ) {}
 
   async execute(id: string): Promise<Chat[] | []> {
     try {
-      const chats = await this.chatRepo.fetchContacts(id);
+      const chats = await this._chatRepo.fetchContacts(id);
       const updatedChats = await Promise.all(
         chats.map(async (chat: any) => {
           const { lastMessage, unreadCount } =
-            await this.messageRepo.getLastMessageAndUnreadCount(
-              chat.id,
-              id
-            );
+            await this._messageRepo.getLastMessageAndUnreadCount(chat.id, id);
 
           return {
             ...chat,

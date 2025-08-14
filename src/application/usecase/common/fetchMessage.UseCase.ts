@@ -3,10 +3,10 @@ import { ImessageRepository } from "../../../infrastructure/@types/ImessageRepos
 import { IfetchMessagesUseCase } from "../../interface/common/IfetchMessagesUserCase";
 
 export class FetchMessagesUsesCase implements IfetchMessagesUseCase {
-  constructor(private messageRepo: ImessageRepository) {}
+  constructor(private _messageRepo: ImessageRepository) {}
   async execute(id: string, receiverId: string): Promise<Message[] | []> {
     try {
-      const messages = await this.messageRepo.fetchMessage(id, receiverId);
+      const messages = await this._messageRepo.fetchMessage(id, receiverId);
       return messages;
     } catch (error) {
       console.error("Error from fetchMessagesUsesCase :", error);

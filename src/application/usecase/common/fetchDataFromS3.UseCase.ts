@@ -3,12 +3,12 @@ import { Is3Service } from "../../../infrastructure/@types/Is3Service";
 import { IfetchDataFromS3UseCase } from "../../interface/common/IfetchDataFromS3UseCase";
 
 export class FetchDataFromS3UseCase implements IfetchDataFromS3UseCase {
-  constructor(private s3Service: Is3Service) {}
+  constructor(private _s3Service: Is3Service) {}
 
   async execute(keys: string[]): Promise<string[]> {
     try {
       const imageUrls = await Promise.all(
-        keys.map((key) => this.s3Service.getImageFromBucket(key))
+        keys.map((key) => this._s3Service.getImageFromBucket(key))
       );
 
       return imageUrls;

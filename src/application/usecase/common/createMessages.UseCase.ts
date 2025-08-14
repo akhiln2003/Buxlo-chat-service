@@ -6,8 +6,8 @@ import { Is3Service } from "../../../infrastructure/@types/Is3Service";
 
 export class CreateMessageUseCase implements IcreateMessageUseCase {
   constructor(
-    private messageRepo: ImessageRepository,
-    private s3Service: Is3Service
+    private _messageRepo: ImessageRepository,
+    private _s3Service: Is3Service
   ) {}
   async execute(
     data: Partial<Message>,
@@ -16,7 +16,7 @@ export class CreateMessageUseCase implements IcreateMessageUseCase {
     try {
       if (file) {
         const randomImageName = Math.random() + Date.now();
-        const response = await this.s3Service.uploadImageToBucket(
+        const response = await this._s3Service.uploadImageToBucket(
           file.buffer,
           file.mimetype,
           `${data.contentType}/${randomImageName}`
@@ -30,7 +30,7 @@ export class CreateMessageUseCase implements IcreateMessageUseCase {
           throw new BadRequest("Faild to send file try again");
         }
       }
-      return await this.messageRepo.create(data as Message);
+      return await this._messageRepo.create(data as Message);
     } catch (error) {
       console.error("Error wile connect mentor : ", error);
       throw new InternalServerError();
