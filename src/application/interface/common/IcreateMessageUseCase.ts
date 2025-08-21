@@ -1,8 +1,9 @@
 import { Message } from "../../../domain/entities/message";
+import { MessageResponseDto } from "../../../zodSchemaDto/output/messageResponse.dto";
 
 export interface IcreateMessageUseCase {
   execute(
     data: Partial<Message>,
     file?: Express.Multer.File
-  ): Promise<Message | null>;
+  ): Promise<MessageResponseDto | null>;
 }

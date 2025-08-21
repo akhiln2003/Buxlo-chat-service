@@ -1,5 +1,5 @@
-import { Message } from "../../../domain/entities/message";
+import { MessageResponseDto } from "../../../zodSchemaDto/output/messageResponse.dto";
 
 export interface IfetchMessagesUseCase {
-  execute(id: string , receiverId:string): Promise<Message[] | []>;
+  execute(id: string , receiverId:string): Promise<MessageResponseDto[] | []>;
 }

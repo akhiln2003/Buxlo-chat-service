@@ -1,4 +1,8 @@
-import { Chat } from "../../domain/entities/chat";
+import { BadRequest } from "@buxlo/common";
+import {
+  ConversationMapper,
+  ConversationResponseDto,
+} from "../../zodSchemaDto/output/conversationResponse.dto";
 import { IchatRepository } from "../@types/IchatRepository";
 import { ChatSchema } from "../database/mongodb/schema/chat.schema";
 
@@ -7,7 +11,7 @@ export class ChatRepository implements IchatRepository {
     userId: string,
     mentorId: string,
     type: "OneToOne" | "Group"
-  ): Promise<Chat> {
+  ): Promise<ConversationResponseDto> {
     try {
       const chat = {
         participants: [userId, mentorId],
@@ -15,34 +19,41 @@ export class ChatRepository implements IchatRepository {
         unreadCount: 0,
       };
       const newChat = ChatSchema.build(chat);
-      return await newChat.save();
+      const data = await newChat.save();
+      const populatedChat = await ChatSchema.findById(data._id)
+        .populate("participants", "name email avatar role status createdAt updatedAt")
+        .lean();
+
+      if (!populatedChat) throw new BadRequest("Chat not found after creation");
+
+      return ConversationMapper.toDto(populatedChat);
     } catch (error: any) {
-      //   customLogger.error(`db error: ${error.message }`);
-      throw new Error(`Wile creating chat faild : ${error.message}`);
+      throw new Error(`Wile creating chat failed: ${error.message}`);
     }
   }
 
   async getOneChat(
     type: "OneToOne" | "Group",
-    userId: string,
-    mentorId: string
-  ): Promise<Chat | null> {
+    userId?: string,
+    mentorId?: string
+  ): Promise<ConversationResponseDto | null> {
     try {
-      if (type == "OneToOne") {
-        return await ChatSchema.findOne({
+      if (type === "OneToOne" && userId && mentorId) {
+        const chat = await ChatSchema.findOne({
           type: "OneToOne",
           participants: { $all: [userId, mentorId] },
         });
+        return chat ? ConversationMapper.toDto(chat) : null;
       }
       return null;
     } catch (error: any) {
-      throw new Error(`Wile creating chat faild : ${error.message}`);
+      throw new Error(`While fetching chat failed: ${error.message}`);
     }
   }
 
-  async fetchContacts(id: string): Promise<Chat[] | []> {
+  async fetchContacts(id: string): Promise<ConversationResponseDto[] | []> {
     try {
-      return await ChatSchema.aggregate([
+      const results = await ChatSchema.aggregate([
         {
           $match: {
             participants: id,
@@ -92,6 +103,7 @@ export class ChatRepository implements IchatRepository {
           },
         },
       ]);
+      return results.map((c) => ConversationMapper.toDto(c));
     } catch (error: any) {
       throw new Error(`While fetching Contacts: ${error.message}`);
     }

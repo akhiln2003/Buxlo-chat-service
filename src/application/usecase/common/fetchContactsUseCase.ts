@@ -1,8 +1,11 @@
 import { InternalServerError } from "@buxlo/common";
-import { Chat } from "../../../domain/entities/chat";
-import { IfetchContactsUseCase } from "../../interface/user/IfetchContactsUseCase";
+import { IfetchContactsUseCase } from "../../interface/common/IfetchContactsUseCase";
 import { ImessageRepository } from "../../../infrastructure/@types/ImessageRepository";
 import { IchatRepository } from "../../../infrastructure/@types/IchatRepository";
+import {
+  ConversationMapper,
+  ConversationResponseDto,
+} from "../../../zodSchemaDto/output/conversationResponse.dto";
 
 export class FetchContactsUseCase implements IfetchContactsUseCase {
   constructor(
@@ -10,19 +13,20 @@ export class FetchContactsUseCase implements IfetchContactsUseCase {
     private _messageRepo: ImessageRepository
   ) {}
 
-  async execute(id: string): Promise<Chat[] | []> {
+  async execute(id: string): Promise<ConversationResponseDto[] | []> {
     try {
       const chats = await this._chatRepo.fetchContacts(id);
+
       const updatedChats = await Promise.all(
         chats.map(async (chat: any) => {
           const { lastMessage, unreadCount } =
             await this._messageRepo.getLastMessageAndUnreadCount(chat.id, id);
 
-          return {
+          return ConversationMapper.toDto({
             ...chat,
             lastMessage,
             unreadCount,
-          };
+          });
         })
       );
 

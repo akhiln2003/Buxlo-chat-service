@@ -3,6 +3,7 @@ import { Message } from "../../../domain/entities/message";
 import { ImessageRepository } from "../../../infrastructure/@types/ImessageRepository";
 import { IcreateMessageUseCase } from "../../interface/common/IcreateMessageUseCase";
 import { Is3Service } from "../../../infrastructure/@types/Is3Service";
+import { MessageResponseDto } from "../../../zodSchemaDto/output/messageResponse.dto";
 
 export class CreateMessageUseCase implements IcreateMessageUseCase {
   constructor(
@@ -12,7 +13,7 @@ export class CreateMessageUseCase implements IcreateMessageUseCase {
   async execute(
     data: Partial<Message>,
     file?: Express.Multer.File
-  ): Promise<Message | null> {
+  ): Promise<MessageResponseDto | null> {
     try {
       if (file) {
         const randomImageName = Math.random() + Date.now();

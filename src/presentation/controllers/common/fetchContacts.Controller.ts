@@ -1,6 +1,6 @@
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 import { NextFunction, Request, Response } from "express";
-import { IfetchContactsUseCase } from "../../../application/interface/user/IfetchContactsUseCase";
+import { IfetchContactsUseCase } from "../../../application/interface/common/IfetchContactsUseCase";
 
 export class FetchContactsController {
   constructor(private _fetchContactsUseCase: IfetchContactsUseCase) {}

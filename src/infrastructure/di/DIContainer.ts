@@ -2,12 +2,12 @@ import { IcreateMessageUseCase } from "../../application/interface/common/Icreat
 import { IfetchDataFromS3UseCase } from "../../application/interface/common/IfetchDataFromS3UseCase";
 import { IfetchMessagesUseCase } from "../../application/interface/common/IfetchMessagesUserCase";
 import { IconnectMentorUseCase } from "../../application/interface/user/IconnectMentorUseCase";
-import { IfetchContactsUseCase } from "../../application/interface/user/IfetchContactsUseCase";
+import { IfetchContactsUseCase } from "../../application/interface/common/IfetchContactsUseCase";
 import { CreateMessageUseCase } from "../../application/usecase/common/createMessages.UseCase";
 import { FetchDataFromS3UseCase } from "../../application/usecase/common/fetchDataFromS3.UseCase";
 import { FetchMessagesUsesCase } from "../../application/usecase/common/fetchMessage.UseCase";
 import { ConnectMentorUseCase } from "../../application/usecase/user/connectMentorUseCase";
-import { FetchContactsUseCase } from "../../application/usecase/user/fetchContactsUseCase";
+import { FetchContactsUseCase } from "../../application/usecase/common/fetchContactsUseCase";
 import { IchatRepository } from "../@types/IchatRepository";
 import { ImessageRepository } from "../@types/ImessageRepository";
 import { Is3Service } from "../@types/Is3Service";

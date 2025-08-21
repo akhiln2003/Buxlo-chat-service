@@ -1,12 +1,17 @@
-import { Chat } from "../../domain/entities/chat";
+import { ConversationResponseDto } from "../../zodSchemaDto/output/conversationResponse.dto";
 
 export interface IchatRepository {
   create(
     userId: string,
     mentorId: string,
     type: "OneToOne" | "Group"
-  ): Promise<Chat>;
-  getOneChat( type:  "OneToOne" | "Group" , userId ?: string , mentorId?:string ):Promise<Chat|null>
-  fetchContacts( id :string ):Promise<Chat[] | [] >
-  //   update(id: string, query: object): Promise<Chat>;
+  ): Promise<ConversationResponseDto>;
+
+  getOneChat(
+    type: "OneToOne" | "Group",
+    userId?: string,
+    mentorId?: string
+  ): Promise<ConversationResponseDto | null>;
+
+  fetchContacts(id: string): Promise<ConversationResponseDto[] | []>;
 }

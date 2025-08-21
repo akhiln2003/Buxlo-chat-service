@@ -1,6 +1,6 @@
-import { Chat } from "../../../domain/entities/chat";
+import { ConversationResponseDto } from "../../../zodSchemaDto/output/conversationResponse.dto";
 
 export interface IconnectMentorUseCase{
-    execute(userId: string , mentorId:string): Promise<Chat|null>;
+    execute(userId: string , mentorId:string): Promise<ConversationResponseDto>;
     
 }

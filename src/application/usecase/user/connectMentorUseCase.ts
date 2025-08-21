@@ -1,20 +1,24 @@
 import { InternalServerError } from "@buxlo/common";
-import { Chat } from "../../../domain/entities/chat";
-import { ChatRepository } from "../../../infrastructure/repositories/chat.Repository";
 import { IconnectMentorUseCase } from "../../interface/user/IconnectMentorUseCase";
+import { ConversationResponseDto } from "../../../zodSchemaDto/output/conversationResponse.dto";
+import { IchatRepository } from "../../../infrastructure/@types/IchatRepository";
 
 export class ConnectMentorUseCase implements IconnectMentorUseCase {
-  constructor(private _chatRepo: ChatRepository) {}
-  async execute(userId: string, mentorId: string): Promise<Chat | null> {
+  constructor(private _chatRepo: IchatRepository) {}
+  async execute(
+    userId: string,
+    mentorId: string
+  ): Promise<ConversationResponseDto> {
     try {
       const chat = await this._chatRepo.getOneChat(
         "OneToOne",
         userId,
         mentorId
       );
-      if (!chat) {
-        return this._chatRepo.create(userId, mentorId, "OneToOne");
-      }
+
+      if (!chat)
+        return await this._chatRepo.create(userId, mentorId, "OneToOne");
+
       return chat;
     } catch (error) {
       console.error("Error wile connect mentor : ", error);
