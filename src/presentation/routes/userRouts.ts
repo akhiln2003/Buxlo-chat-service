@@ -2,7 +2,7 @@ import { Router } from "express";
 import { DIContainer } from "../../infrastructure/di/DIContainer";
 import { ConnectMentorController } from "../controllers/user/connectMentor.Controller";
 import { validateReqBody } from "@buxlo/common";
-import { connectMentorDto } from "../../zodSchemaDto/input/user/connectMentor.dto";
+import { connectMentorDto } from "../../domain/zodSchemaDto/input/user/connectMentor.dto";
 
 export class UserRouter {
   private _router: Router;

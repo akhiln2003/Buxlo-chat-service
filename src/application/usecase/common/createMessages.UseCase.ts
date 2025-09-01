@@ -3,7 +3,10 @@ import { Message } from "../../../domain/entities/message";
 import { ImessageRepository } from "../../../infrastructure/@types/ImessageRepository";
 import { IcreateMessageUseCase } from "../../interface/common/IcreateMessageUseCase";
 import { Is3Service } from "../../../infrastructure/@types/Is3Service";
-import { MessageResponseDto } from "../../../zodSchemaDto/output/messageResponse.dto";
+import {
+  MessageMapper,
+  MessageResponseDto,
+} from "../../../domain/zodSchemaDto/output/messageResponse.dto";
 
 export class CreateMessageUseCase implements IcreateMessageUseCase {
   constructor(
@@ -31,7 +34,8 @@ export class CreateMessageUseCase implements IcreateMessageUseCase {
           throw new BadRequest("Faild to send file try again");
         }
       }
-      return await this._messageRepo.create(data as Message);
+      const savedMessage = await this._messageRepo.create(data as Message);
+      return MessageMapper.toDto(savedMessage);
     } catch (error) {
       console.error("Error wile connect mentor : ", error);
       throw new InternalServerError();

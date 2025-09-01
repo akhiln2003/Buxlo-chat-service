@@ -1,5 +1,5 @@
 import { Message } from "../../../domain/entities/message";
-import { MessageResponseDto } from "../../../zodSchemaDto/output/messageResponse.dto";
+import { MessageResponseDto } from "../../../domain/zodSchemaDto/output/messageResponse.dto";
 
 export interface IcreateMessageUseCase {
   execute(

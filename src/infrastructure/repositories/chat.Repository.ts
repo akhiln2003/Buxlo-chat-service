@@ -1,17 +1,14 @@
 import { BadRequest } from "@buxlo/common";
-import {
-  ConversationMapper,
-  ConversationResponseDto,
-} from "../../zodSchemaDto/output/conversationResponse.dto";
 import { IchatRepository } from "../@types/IchatRepository";
 import { ChatSchema } from "../database/mongodb/schema/chat.schema";
+import { Chat } from "../../domain/entities/chat";
 
 export class ChatRepository implements IchatRepository {
   async create(
     userId: string,
     mentorId: string,
     type: "OneToOne" | "Group"
-  ): Promise<ConversationResponseDto> {
+  ): Promise<Chat> {
     try {
       const chat = {
         participants: [userId, mentorId],
@@ -21,12 +18,15 @@ export class ChatRepository implements IchatRepository {
       const newChat = ChatSchema.build(chat);
       const data = await newChat.save();
       const populatedChat = await ChatSchema.findById(data._id)
-        .populate("participants", "name email avatar role status createdAt updatedAt")
+        .populate(
+          "participants",
+          "name email avatar role status createdAt updatedAt"
+        )
         .lean();
 
       if (!populatedChat) throw new BadRequest("Chat not found after creation");
 
-      return ConversationMapper.toDto(populatedChat);
+      return populatedChat;
     } catch (error: any) {
       throw new Error(`Wile creating chat failed: ${error.message}`);
     }
@@ -36,14 +36,14 @@ export class ChatRepository implements IchatRepository {
     type: "OneToOne" | "Group",
     userId?: string,
     mentorId?: string
-  ): Promise<ConversationResponseDto | null> {
+  ): Promise<Chat | null> {
     try {
       if (type === "OneToOne" && userId && mentorId) {
         const chat = await ChatSchema.findOne({
           type: "OneToOne",
           participants: { $all: [userId, mentorId] },
         });
-        return chat ? ConversationMapper.toDto(chat) : null;
+        return chat ? chat : null;
       }
       return null;
     } catch (error: any) {
@@ -51,7 +51,7 @@ export class ChatRepository implements IchatRepository {
     }
   }
 
-  async fetchContacts(id: string): Promise<ConversationResponseDto[] | []> {
+  async fetchContacts(id: string): Promise<Chat[] | []> {
     try {
       const results = await ChatSchema.aggregate([
         {
@@ -94,8 +94,8 @@ export class ChatRepository implements IchatRepository {
         },
         {
           $project: {
-            id: "$_id", // Rename _id to id
-            _id: 0, // Exclude original _id
+            id: "$_id", 
+            _id: 0, 
             type: 1,
             lastMessage: 1,
             unreadCount: 1,
@@ -103,7 +103,7 @@ export class ChatRepository implements IchatRepository {
           },
         },
       ]);
-      return results.map((c) => ConversationMapper.toDto(c));
+      return results;
     } catch (error: any) {
       throw new Error(`While fetching Contacts: ${error.message}`);
     }

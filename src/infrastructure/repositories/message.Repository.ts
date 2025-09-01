@@ -2,35 +2,26 @@ import { InternalServerError } from "@buxlo/common";
 import { Message } from "../../domain/entities/message";
 import { ImessageRepository } from "../@types/ImessageRepository";
 import { MessageSchema } from "../database/mongodb/schema/message.schema";
-import {
-  MessageMapper,
-  MessageResponseDto,
-} from "../../zodSchemaDto/output/messageResponse.dto";
 
 export class MessageRepository implements ImessageRepository {
-  async create(message: Message): Promise<MessageResponseDto> {
+  async create(message: Message): Promise<Message> {
     try {
       const newMessage = MessageSchema.build(message);
-      const savedMessage = await newMessage.save();
-      return MessageMapper.toDto(savedMessage.toObject());
+      return await newMessage.save();
     } catch (error) {
       console.error("Error while creating messages: ", error);
       throw new InternalServerError();
     }
   }
 
-  async fetchMessage(
-    chatId: string,
-    receiverId: string
-  ): Promise<MessageResponseDto[]> {
+  async fetchMessage(chatId: string, receiverId: string): Promise<Message[]> {
     try {
       await MessageSchema.updateMany(
         { chatId, receiverId, status: { $ne: "read" } },
         { $set: { status: "read" } }
       );
 
-      const messages = await MessageSchema.find({ chatId }).lean();
-      return messages.map((msg) => MessageMapper.toDto(msg));
+      return await MessageSchema.find({ chatId }).lean();
     } catch (error) {
       console.error("Error while fetching messages: ", error);
       throw new InternalServerError();
@@ -40,7 +31,7 @@ export class MessageRepository implements ImessageRepository {
   async getLastMessageAndUnreadCount(
     chatId: string,
     receiverId: string
-  ): Promise<{ lastMessage: MessageResponseDto | null; unreadCount: number }> {
+  ): Promise<{ lastMessage: Message | null; unreadCount: number }> {
     try {
       const lastMessage = await MessageSchema.findOne({ chatId })
         .sort({ createdAt: -1 })
@@ -53,7 +44,7 @@ export class MessageRepository implements ImessageRepository {
       });
 
       return {
-        lastMessage: lastMessage ? MessageMapper.toDto(lastMessage) : null,
+        lastMessage: lastMessage ? lastMessage : null,
         unreadCount,
       };
     } catch (error) {
@@ -65,17 +56,14 @@ export class MessageRepository implements ImessageRepository {
     }
   }
 
-  async updateMessage(
-    chatId: string,
-    receiverId: string
-  ): Promise<MessageResponseDto[]> {
+  async updateMessage(chatId: string, receiverId: string): Promise<Message[]> {
     try {
       await MessageSchema.updateMany(
         { chatId, receiverId, status: { $ne: "read" } },
         { $set: { status: "read" } }
       );
 
-      const updatedMessages = await MessageSchema.find({
+      return await MessageSchema.find({
         chatId,
         receiverId,
         status: "read",
@@ -83,7 +71,6 @@ export class MessageRepository implements ImessageRepository {
         .sort({ createdAt: -1 })
         .lean();
 
-      return updatedMessages.map((msg) => MessageMapper.toDto(msg));
     } catch (error) {
       console.error("Error while updating messages", error);
       throw new InternalServerError();

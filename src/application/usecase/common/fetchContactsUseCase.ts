@@ -5,7 +5,8 @@ import { IchatRepository } from "../../../infrastructure/@types/IchatRepository"
 import {
   ConversationMapper,
   ConversationResponseDto,
-} from "../../../zodSchemaDto/output/conversationResponse.dto";
+} from "../../../domain/zodSchemaDto/output/conversationResponse.dto";
+import { MessageMapper } from "../../../domain/zodSchemaDto/output/messageResponse.dto";
 
 export class FetchContactsUseCase implements IfetchContactsUseCase {
   constructor(
@@ -24,7 +25,7 @@ export class FetchContactsUseCase implements IfetchContactsUseCase {
 
           return ConversationMapper.toDto({
             ...chat,
-            lastMessage,
+            lastMessage: lastMessage ? MessageMapper.toDto(lastMessage) : null,
             unreadCount,
           });
         })

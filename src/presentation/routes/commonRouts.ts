@@ -5,9 +5,9 @@ import { validateReqQueryParams } from "@buxlo/common";
 import { CreateMessageController } from "../controllers/common/createMessage.controller";
 import { FetchDataFromS3Controller } from "../controllers/common/fetchDataFromS3.controller";
 import multer from "multer";
-import { fetchMessagesDto } from "../../zodSchemaDto/input/user/fetchMessages.dto";
 import { FetchContactsController } from "../controllers/common/fetchContacts.Controller";
-import { fetchContactsDto } from "../../zodSchemaDto/input/user/fetchContacts.dto";
+import { fetchMessagesDto } from "../../domain/zodSchemaDto/input/user/fetchMessages.dto";
+import { fetchContactsDto } from "../../domain/zodSchemaDto/input/user/fetchContacts.dto";
 
 export class CommonRouts {
   private _router: Router;
