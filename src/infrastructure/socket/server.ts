@@ -1,13 +1,13 @@
 import { Server as HttpServer } from "http";
 import { Server, Socket } from "socket.io";
-import { ImessageRepository } from "../@types/ImessageRepository";
+import { IMessageRepository } from "../@types/IMessageRepository";
 import { MessageRepository } from "../repositories/message.Repository";
 
 export class SocketServer {
   private _io: Server;
   private _online: Map<string, string> = new Map();
   private _activeCalls: Map<string, string> = new Map(); // Track active calls
-  private _messageRepo: ImessageRepository;
+  private _messageRepo: IMessageRepository;
 
   constructor(httpServer: HttpServer) {
     this._messageRepo = new MessageRepository();

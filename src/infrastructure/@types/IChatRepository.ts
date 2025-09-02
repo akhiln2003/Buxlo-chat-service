@@ -1,6 +1,6 @@
 import { Chat } from "../../domain/entities/chat";
 
-export interface IchatRepository {
+export interface IChatRepository {
   create(
     userId: string,
     mentorId: string,

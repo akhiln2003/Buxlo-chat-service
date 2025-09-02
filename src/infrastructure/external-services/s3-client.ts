@@ -5,12 +5,12 @@ import {
   DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { Is3Service } from "../@types/Is3Service";
+import { IS3Service } from "../@types/IS3Service";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-export class S3Service implements Is3Service {
+export class S3Service implements IS3Service {
   private _s3: S3Client;
   private _bucketName: string;
 

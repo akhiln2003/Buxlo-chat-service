@@ -1,8 +1,8 @@
 import { User } from "../../domain/entities/user";
-import { IuserRepository } from "../@types/IuserRepository";
+import { IUserRepository } from "../@types/IUserRepository";
 import { UserChat } from "../database/mongodb/schema/user.schema";
 
-export class UserRepository implements IuserRepository {
+export class UserRepository implements IUserRepository {
   async create(user: User): Promise<User> {
     try {
       const newUser = UserChat.build(user);

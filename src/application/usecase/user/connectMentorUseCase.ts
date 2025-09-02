@@ -1,13 +1,13 @@
 import { InternalServerError } from "@buxlo/common";
-import { IconnectMentorUseCase } from "../../interface/user/IconnectMentorUseCase";
-import { IchatRepository } from "../../../infrastructure/@types/IchatRepository";
+import { IConnectMentorUseCase } from "../../interface/user/IConnectMentorUseCase";
+import { IChatRepository } from "../../../infrastructure/@types/IChatRepository";
 import {
   ConversationMapper,
   ConversationResponseDto,
 } from "../../../domain/zodSchemaDto/output/conversationResponse.dto";
 
-export class ConnectMentorUseCase implements IconnectMentorUseCase {
-  constructor(private _chatRepo: IchatRepository) {}
+export class ConnectMentorUseCase implements IConnectMentorUseCase {
+  constructor(private _chatRepo: IChatRepository) {}
   async execute(
     userId: string,
     mentorId: string

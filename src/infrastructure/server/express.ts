@@ -1,11 +1,11 @@
 import { Application } from "express";
-import { Iserver } from "../../domain/interfaces/Iserver";
+import { IServer } from "../../domain/interfaces/IServer";
 import express from "express";
 import cookieParser from "cookie-parser";
 import { createServer } from "http";
 import { SocketServer } from "../socket/server";
 
-export class ExpressWebServer implements Iserver {
+export class ExpressWebServer implements IServer {
   private _app: Application;
   private _server: any;
 

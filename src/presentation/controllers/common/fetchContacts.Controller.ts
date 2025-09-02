@@ -1,9 +1,9 @@
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 import { NextFunction, Request, Response } from "express";
-import { IfetchContactsUseCase } from "../../../application/interface/common/IfetchContactsUseCase";
+import { IFetchContactsUseCase } from "../../../application/interface/common/IFetchContactsUseCase";
 
 export class FetchContactsController {
-  constructor(private _fetchContactsUseCase: IfetchContactsUseCase) {}
+  constructor(private _fetchContactsUseCase: IFetchContactsUseCase) {}
   contacts = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.query;

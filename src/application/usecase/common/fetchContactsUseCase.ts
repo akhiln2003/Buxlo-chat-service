@@ -1,17 +1,17 @@
 import { InternalServerError } from "@buxlo/common";
-import { IfetchContactsUseCase } from "../../interface/common/IfetchContactsUseCase";
-import { ImessageRepository } from "../../../infrastructure/@types/ImessageRepository";
-import { IchatRepository } from "../../../infrastructure/@types/IchatRepository";
+import { IFetchContactsUseCase } from "../../interface/common/IFetchContactsUseCase";
+import { IMessageRepository } from "../../../infrastructure/@types/IMessageRepository";
+import { IChatRepository } from "../../../infrastructure/@types/IChatRepository";
 import {
   ConversationMapper,
   ConversationResponseDto,
 } from "../../../domain/zodSchemaDto/output/conversationResponse.dto";
 import { MessageMapper } from "../../../domain/zodSchemaDto/output/messageResponse.dto";
 
-export class FetchContactsUseCase implements IfetchContactsUseCase {
+export class FetchContactsUseCase implements IFetchContactsUseCase {
   constructor(
-    private _chatRepo: IchatRepository,
-    private _messageRepo: ImessageRepository
+    private _chatRepo: IChatRepository,
+    private _messageRepo: IMessageRepository
   ) {}
 
   async execute(id: string): Promise<ConversationResponseDto[] | []> {

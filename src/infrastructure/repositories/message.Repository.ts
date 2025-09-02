@@ -1,9 +1,9 @@
 import { InternalServerError } from "@buxlo/common";
 import { Message } from "../../domain/entities/message";
-import { ImessageRepository } from "../@types/ImessageRepository";
+import { IMessageRepository } from "../@types/IMessageRepository";
 import { MessageSchema } from "../database/mongodb/schema/message.schema";
 
-export class MessageRepository implements ImessageRepository {
+export class MessageRepository implements IMessageRepository {
   async create(message: Message): Promise<Message> {
     try {
       const newMessage = MessageSchema.build(message);

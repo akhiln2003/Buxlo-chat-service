@@ -1,4 +1,4 @@
-export interface Iserver{
+export interface IServer{
     start(port: number): Promise<void>;
     close(): Promise<void>;
     registerMiddleware(middleware: any): void;

@@ -1,17 +1,17 @@
 import { BadRequest, InternalServerError } from "@buxlo/common";
 import { Message } from "../../../domain/entities/message";
-import { ImessageRepository } from "../../../infrastructure/@types/ImessageRepository";
-import { IcreateMessageUseCase } from "../../interface/common/IcreateMessageUseCase";
-import { Is3Service } from "../../../infrastructure/@types/Is3Service";
+import { IMessageRepository } from "../../../infrastructure/@types/IMessageRepository";
+import { ICreateMessageUseCase } from "../../interface/common/ICreateMessageUseCase";
+import { IS3Service } from "../../../infrastructure/@types/IS3Service";
 import {
   MessageMapper,
   MessageResponseDto,
 } from "../../../domain/zodSchemaDto/output/messageResponse.dto";
 
-export class CreateMessageUseCase implements IcreateMessageUseCase {
+export class CreateMessageUseCase implements ICreateMessageUseCase {
   constructor(
-    private _messageRepo: ImessageRepository,
-    private _s3Service: Is3Service
+    private _messageRepo: IMessageRepository,
+    private _s3Service: IS3Service
   ) {}
   async execute(
     data: Partial<Message>,

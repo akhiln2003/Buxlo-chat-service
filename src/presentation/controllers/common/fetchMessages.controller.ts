@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { IfetchMessagesUseCase } from "../../../application/interface/common/IfetchMessagesUserCase";
+import { IFetchMessagesUseCase } from "../../../application/interface/common/IFetchMessagesUserCase";
 import HttpStatusCode from "@buxlo/common/build/common/httpStatusCode";
 import { BadRequest } from "@buxlo/common";
 
 export class FetchMessagesController {
-  constructor(private _fetchMessagesUseCase: IfetchMessagesUseCase) {}
+  constructor(private _fetchMessagesUseCase: IFetchMessagesUseCase) {}
   fetch = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id, receiverId } = req.query;

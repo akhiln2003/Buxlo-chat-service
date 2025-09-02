@@ -2,11 +2,11 @@ import {
   MessageMapper,
   MessageResponseDto,
 } from "../../../domain/zodSchemaDto/output/messageResponse.dto";
-import { ImessageRepository } from "../../../infrastructure/@types/ImessageRepository";
-import { IfetchMessagesUseCase } from "../../interface/common/IfetchMessagesUserCase";
+import { IMessageRepository } from "../../../infrastructure/@types/IMessageRepository";
+import { IFetchMessagesUseCase } from "../../interface/common/IFetchMessagesUserCase";
 
-export class FetchMessagesUsesCase implements IfetchMessagesUseCase {
-  constructor(private _messageRepo: ImessageRepository) {}
+export class FetchMessagesUsesCase implements IFetchMessagesUseCase {
+  constructor(private _messageRepo: IMessageRepository) {}
   async execute(
     id: string,
     receiverId: string

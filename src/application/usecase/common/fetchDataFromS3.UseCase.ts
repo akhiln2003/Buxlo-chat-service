@@ -1,9 +1,9 @@
 import { BadRequest } from "@buxlo/common";
-import { Is3Service } from "../../../infrastructure/@types/Is3Service";
-import { IfetchDataFromS3UseCase } from "../../interface/common/IfetchDataFromS3UseCase";
+import { IS3Service } from "../../../infrastructure/@types/IS3Service";
+import { IFetchDataFromS3UseCase } from "../../interface/common/IFetchDataFromS3UseCase";
 
-export class FetchDataFromS3UseCase implements IfetchDataFromS3UseCase {
-  constructor(private _s3Service: Is3Service) {}
+export class FetchDataFromS3UseCase implements IFetchDataFromS3UseCase {
+  constructor(private _s3Service: IS3Service) {}
 
   async execute(keys: string[]): Promise<string[]> {
     try {
