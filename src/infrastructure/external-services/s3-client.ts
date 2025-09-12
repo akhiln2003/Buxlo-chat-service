@@ -3,10 +3,13 @@ import {
   S3Client,
   GetObjectCommand,
   DeleteObjectCommand,
+  PutObjectCommandOutput,
+  DeleteObjectCommandOutput,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { IS3Service } from "../@types/IS3Service";
 import dotenv from "dotenv";
+import { BadRequest } from "@buxlo/common";
 
 dotenv.config();
 
@@ -30,7 +33,11 @@ export class S3Service implements IS3Service {
     });
   }
 
-  async uploadImageToBucket(bufferCode: Buffer, type: string, key: string) {
+  async uploadImageToBucket(
+    bufferCode: Buffer,
+    type: string,
+    key: string
+  ): Promise<PutObjectCommandOutput> {
     try {
       const params = {
         Bucket: this._bucketName,
@@ -42,13 +49,13 @@ export class S3Service implements IS3Service {
       const command = new PutObjectCommand(params);
       const data = await this._s3.send(command);
       return data;
-    } catch (error) {
+    } catch (error: any) {
       console.error("error from s3 service ", error);
-      return error;
+      throw new BadRequest(`Faild to updateImages  ${error.message}`);
     }
   }
 
-  async getImageFromBucket(key: string) {
+  async getImageFromBucket(key: string): Promise<string> {
     try {
       const imageUrl = await getSignedUrl(
         this._s3,
@@ -59,14 +66,14 @@ export class S3Service implements IS3Service {
         { expiresIn: 60 }
       );
       return imageUrl;
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
 
-      return error;
+      throw new BadRequest(`Faild to get images  ${error.message}`);
     }
   }
 
-  async deleteImageFromBucket(key: string) {
+  async deleteImageFromBucket(key: string): Promise<DeleteObjectCommandOutput> {
     try {
       const deleteParams = {
         Bucket: this._bucketName,
@@ -75,8 +82,8 @@ export class S3Service implements IS3Service {
       const data = await this._s3.send(new DeleteObjectCommand(deleteParams));
 
       return data;
-    } catch (error) {
-      return error;
+    } catch (error: any) {
+      throw new BadRequest(`Faild to delete image  ${error.message}`);
     }
   }
 }

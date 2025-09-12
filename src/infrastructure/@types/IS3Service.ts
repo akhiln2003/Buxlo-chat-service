@@ -1,5 +1,14 @@
-export interface  IS3Service {
-    uploadImageToBucket(bufferCode: Buffer, type: string, key: string):any;
-    getImageFromBucket(key:string):any;
-    deleteImageFromBucket(key: string ):any;
+import {
+  PutObjectCommandOutput,
+  DeleteObjectCommandOutput,
+} from "@aws-sdk/client-s3";
+
+export interface IS3Service {
+  uploadImageToBucket(
+    bufferCode: Buffer,
+    type: string,
+    key: string
+  ): Promise<PutObjectCommandOutput>;
+  getImageFromBucket(key: string): Promise<string>;
+  deleteImageFromBucket(key: string): Promise<DeleteObjectCommandOutput>;
 }

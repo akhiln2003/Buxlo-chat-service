@@ -37,7 +37,7 @@ export class App {
   }
 
   private _registerErrorHandler(): void {
-    this._server.registerErrorHandler(errorHandler as any);
+    this._server.registerErrorHandler(errorHandler);
   }
 
   async start(port: number): Promise<void> {

@@ -19,13 +19,19 @@ export class FetchContactsUseCase implements IFetchContactsUseCase {
       const chats = await this._chatRepo.fetchContacts(id);
 
       const updatedChats = await Promise.all(
-        chats.map(async (chat: any) => {
+        chats.map(async (chat) => {
           const { lastMessage, unreadCount } =
-            await this._messageRepo.getLastMessageAndUnreadCount(chat.id, id);
+            await this._messageRepo.getLastMessageAndUnreadCount(
+              chat.id as string,
+              id
+            );
+          const lastMessageResponse = lastMessage
+            ? MessageMapper.toDto(lastMessage)
+            : null;
 
           return ConversationMapper.toDto({
             ...chat,
-            lastMessage: lastMessage ? MessageMapper.toDto(lastMessage) : null,
+            lastmessage: lastMessageResponse,
             unreadCount,
           });
         })

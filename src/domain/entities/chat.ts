@@ -6,6 +6,9 @@ export class Chat {
         public lastMessage?: string,
         public name?: string,
         public id?:string,
+        public createdAt?:Date,
+        public updatedAt?:Date,
+
     ) {}
   }
   

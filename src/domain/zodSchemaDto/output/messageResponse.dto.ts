@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Message } from "../../entities/message";
 
 export const MessageResponseDto = z.object({
   id: z.string(),
@@ -14,11 +15,13 @@ export const MessageResponseDto = z.object({
 });
 
 export type MessageResponseDto = z.infer<typeof MessageResponseDto>;
-
+interface IMessage extends Message {
+  _id?: string;
+}
 export class MessageMapper {
-  static toDto(message: any): MessageResponseDto {
+  static toDto(message: IMessage): MessageResponseDto {
     return MessageResponseDto.parse({
-      id: message._id?.toString() ?? message.id,
+      id: message._id?.toString() ?? message.id?.toString(),
       chatId: message.chatId,
       senderId: message.senderId,
       receiverId: message.receiverId,
@@ -26,8 +29,8 @@ export class MessageMapper {
       contentType: message.contentType,
       status: message.status,
       replyTo: message.replyTo,
-      createdAt: new Date(message.createdAt),
-      updatedAt: new Date(message.updatedAt),
+      createdAt: new Date(message.createdAt as Date),
+      updatedAt: new Date(message.updatedAt as Date),
     });
   }
 }

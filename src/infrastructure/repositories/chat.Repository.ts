@@ -55,17 +55,13 @@ export class ChatRepository implements IChatRepository {
     try {
       const results = await ChatSchema.aggregate([
         {
-          $match: {
-            participants: id,
-          },
+          $match: { participants: id },
         },
         {
           $unwind: "$participants",
         },
         {
-          $match: {
-            participants: { $ne: id },
-          },
+          $match: { participants: { $ne: id } },
         },
         {
           $lookup: {
@@ -75,6 +71,19 @@ export class ChatRepository implements IChatRepository {
               {
                 $match: {
                   $expr: { $eq: [{ $toString: "$_id" }, "$$participantId"] },
+                },
+              },
+              {
+                $project: {
+                  id: { $toString: "$_id" },
+                  _id: 0,
+                  name: 1,
+                  email: 1,
+                  avatar: 1,
+                  role: 1,
+                  status: 1,
+                  createdAt: 1,
+                  updatedAt: 1,
                 },
               },
             ],
@@ -94,8 +103,8 @@ export class ChatRepository implements IChatRepository {
         },
         {
           $project: {
-            id: "$_id", 
-            _id: 0, 
+            id: { $toString: "$_id" },
+            _id: 0,
             type: 1,
             lastMessage: 1,
             unreadCount: 1,
@@ -103,6 +112,7 @@ export class ChatRepository implements IChatRepository {
           },
         },
       ]);
+
       return results;
     } catch (error: any) {
       throw new Error(`While fetching Contacts: ${error.message}`);

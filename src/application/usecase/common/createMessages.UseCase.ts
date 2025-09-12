@@ -1,5 +1,4 @@
 import { BadRequest, InternalServerError } from "@buxlo/common";
-import { Message } from "../../../domain/entities/message";
 import { IMessageRepository } from "../../../infrastructure/@types/IMessageRepository";
 import { ICreateMessageUseCase } from "../../interface/common/ICreateMessageUseCase";
 import { IS3Service } from "../../../infrastructure/@types/IS3Service";
@@ -7,6 +6,7 @@ import {
   MessageMapper,
   MessageResponseDto,
 } from "../../../domain/zodSchemaDto/output/messageResponse.dto";
+import { IMessageData } from "../../interface/common/IMessage";
 
 export class CreateMessageUseCase implements ICreateMessageUseCase {
   constructor(
@@ -14,7 +14,7 @@ export class CreateMessageUseCase implements ICreateMessageUseCase {
     private _s3Service: IS3Service
   ) {}
   async execute(
-    data: Partial<Message>,
+    data: IMessageData,
     file?: Express.Multer.File
   ): Promise<MessageResponseDto | null> {
     try {
@@ -34,7 +34,7 @@ export class CreateMessageUseCase implements ICreateMessageUseCase {
           throw new BadRequest("Faild to send file try again");
         }
       }
-      const savedMessage = await this._messageRepo.create(data as Message);
+      const savedMessage = await this._messageRepo.create(data);
       return MessageMapper.toDto(savedMessage);
     } catch (error) {
       console.error("Error wile connect mentor : ", error);

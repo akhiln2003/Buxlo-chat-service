@@ -8,6 +8,8 @@ export class Message {
     public status: "sent" | "delivered" | "received" | "read",
     public deleted?: "me" | "everyone",
     public replyTo?: string,
-    public id?: string
+    public id?: string,
+    public createdAt?:Date,
+    public updatedAt?:Date
   ) {}
 }

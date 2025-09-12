@@ -70,7 +70,6 @@ export class MessageRepository implements IMessageRepository {
       })
         .sort({ createdAt: -1 })
         .lean();
-
     } catch (error) {
       console.error("Error while updating messages", error);
       throw new InternalServerError();
