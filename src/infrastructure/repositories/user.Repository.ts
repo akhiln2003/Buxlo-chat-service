@@ -1,4 +1,4 @@
-import { User } from "../../domain/entities/user";
+import { User } from "../../domain/entities/user.entity";
 import { IUserRepository } from "../@types/IUserRepository";
 import { UserChat } from "../database/mongodb/schema/user.schema";
 

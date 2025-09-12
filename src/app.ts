@@ -7,8 +7,8 @@ import {
 
 import loggerMiddleware from "./presentation/middlewares/loggerMiddleware";
 import { messageBroker } from "./infrastructure/MessageBroker/config";
-import { UserRouter } from "./presentation/routes/userRouts";
-import { CommonRouts } from "./presentation/routes/commonRouts";
+import { UserRouter } from "./presentation/routes/user.routes";
+import { CommonRouts } from "./presentation/routes/common.routes";
 
 
 export class App {

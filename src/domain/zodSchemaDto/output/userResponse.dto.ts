@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { User } from "../../entities/user";
+import { User } from "../../entities/user.entity";
 
 export const UserResponseDto = z.object({
   id: z.string(),

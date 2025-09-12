@@ -1,7 +1,7 @@
 import { BadRequest } from "@buxlo/common";
 import { IChatRepository } from "../@types/IChatRepository";
 import { ChatSchema } from "../database/mongodb/schema/chat.schema";
-import { Chat } from "../../domain/entities/chat";
+import { Chat } from "../../domain/entities/chat.entity";
 
 export class ChatRepository implements IChatRepository {
   async create(

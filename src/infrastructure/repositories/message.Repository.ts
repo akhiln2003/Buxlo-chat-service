@@ -1,5 +1,5 @@
 import { InternalServerError } from "@buxlo/common";
-import { Message } from "../../domain/entities/message";
+import { Message } from "../../domain/entities/message.entity";
 import { IMessageRepository } from "../@types/IMessageRepository";
 import { MessageSchema } from "../database/mongodb/schema/message.schema";
 
