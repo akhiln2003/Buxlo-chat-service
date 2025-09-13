@@ -1,7 +1,7 @@
 import {
   MessageMapper,
   MessageResponseDto,
-} from "../../../domain/zodSchemaDto/output/messageResponse.dto";
+} from "../../dto/messageResponse.dto";
 import { IMessageRepository } from "../../../infrastructure/@types/IMessageRepository";
 import { IFetchMessagesUseCase } from "../../interface/common/IFetchMessagesUserCase";
 

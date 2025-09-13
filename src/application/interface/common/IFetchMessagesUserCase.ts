@@ -1,4 +1,4 @@
-import { MessageResponseDto } from "../../../domain/zodSchemaDto/output/messageResponse.dto";
+import { MessageResponseDto } from "../../dto/messageResponse.dto";
 
 export interface IFetchMessagesUseCase {
   execute(id: string , receiverId:string): Promise<MessageResponseDto[] | []>;

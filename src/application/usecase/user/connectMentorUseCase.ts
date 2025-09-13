@@ -4,7 +4,7 @@ import { IChatRepository } from "../../../infrastructure/@types/IChatRepository"
 import {
   ConversationMapper,
   ConversationResponseDto,
-} from "../../../domain/zodSchemaDto/output/conversationResponse.dto";
+} from "../../dto/conversationResponse.dto";
 
 export class ConnectMentorUseCase implements IConnectMentorUseCase {
   constructor(private _chatRepo: IChatRepository) {}

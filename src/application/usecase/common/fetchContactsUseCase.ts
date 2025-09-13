@@ -5,8 +5,8 @@ import { IChatRepository } from "../../../infrastructure/@types/IChatRepository"
 import {
   ConversationMapper,
   ConversationResponseDto,
-} from "../../../domain/zodSchemaDto/output/conversationResponse.dto";
-import { MessageMapper } from "../../../domain/zodSchemaDto/output/messageResponse.dto";
+} from "../../dto/conversationResponse.dto";
+import { MessageMapper } from "../../dto/messageResponse.dto";
 
 export class FetchContactsUseCase implements IFetchContactsUseCase {
   constructor(

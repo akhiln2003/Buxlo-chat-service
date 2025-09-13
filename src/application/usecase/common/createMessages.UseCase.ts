@@ -5,7 +5,7 @@ import { IS3Service } from "../../../infrastructure/@types/IS3Service";
 import {
   MessageMapper,
   MessageResponseDto,
-} from "../../../domain/zodSchemaDto/output/messageResponse.dto";
+} from "../../dto/messageResponse.dto";
 import { IMessageData } from "../../interface/common/IMessage";
 
 export class CreateMessageUseCase implements ICreateMessageUseCase {

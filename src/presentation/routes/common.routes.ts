@@ -6,8 +6,8 @@ import { CreateMessageController } from "../controllers/common/createMessage.con
 import { FetchDataFromS3Controller } from "../controllers/common/fetchDataFromS3.controller";
 import multer from "multer";
 import { FetchContactsController } from "../controllers/common/fetchContacts.Controller";
-import { fetchMessagesDto } from "../../domain/zodSchemaDto/input/user/fetchMessages.dto";
-import { fetchContactsDto } from "../../domain/zodSchemaDto/input/user/fetchContacts.dto";
+import { fetchMessagesDto } from "../dto/user/fetchMessages.dto";
+import { fetchContactsDto } from "../dto/user/fetchContacts.dto";
 
 export class CommonRouts {
   private _router: Router;

@@ -1,4 +1,4 @@
-import { MessageResponseDto } from "../../../domain/zodSchemaDto/output/messageResponse.dto";
+import { MessageResponseDto } from "../../dto/messageResponse.dto";
 import { IMessageData } from "./IMessage";
 
 export interface ICreateMessageUseCase {

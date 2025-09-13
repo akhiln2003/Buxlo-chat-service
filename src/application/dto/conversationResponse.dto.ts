@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { MessageResponseDto } from "./messageResponse.dto";
-import { UserResponseDto, UserMapper } from "./userResponse.dto";
-import { Chat } from "../../entities/chat.entity";
+import { UserResponseDto, UserMapper } from "../dto/userResponse.dto";
+import { Chat } from "../../domain/entities/chat.entity";
 
 export const ConversationResponseDto = z.object({
   id: z.string(),
