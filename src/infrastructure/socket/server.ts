@@ -10,12 +10,21 @@ export class SocketServer {
   private _messageRepo: IMessageRepository;
 
   constructor(httpServer: HttpServer) {
+    const allowedOrigins = process.env.FRONT_END_BASE_URL!.split(",");
+
     this._messageRepo = new MessageRepository();
     this._io = new Server(httpServer, {
       cors: {
-        origin: [process.env.CLIENT_URL as string, "http://localhost:5173"],
+        origin: (origin, callback) => {
+          if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+          } else {
+            callback(new Error("Not allowed by CORS"));
+          }
+        },
         methods: ["GET", "POST"],
       },
+      path: "/socket.io",
     });
     this.setupListeners();
   }
